@@ -68,7 +68,7 @@ jobs:
         shell: bash
 
       - name: build the docker image
-        run: docker build -t ${{env.DOCKER_USERNAME}}/${{env.IMAGE_NAME}} ./
+        run: docker build -t ${{env.DOCKER_USERNAME}}/${{env.IMAGE_NAME}} ./backend
         # run: docker build -t ${{env.DOCKER_USERNAME}}/tiller:${{steps.generate-tag.outputs.TAG}} .
 
       - name: push the image to docker hub
