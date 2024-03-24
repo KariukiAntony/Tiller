@@ -5,21 +5,51 @@
 
 version: 2
 updates:
+  # Github Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+      time: "13:00"
+    open-pull-request-limit: 10
+
+  # python
   - package-ecosystem: "pip" # See documentation for possible values
-    directory: "/" # Location of package manifests
+    directory: "backend" # Location of package manifests
     schedule:
       interval: "weekly"
     ignore:
-    - dependency-name: "pytest"
-    commit-message: 
+      - dependency-name: "pytest"
+    commit-message:
       prefix: "pip prod"
       prefix-development: "pip dev"
       include: "scope"
-      
+    open-pull-requests-limit: 3
+
+    # javascript
+  - package-ecosystem: "npm" # See documentation for possible values
+    directory: "frontend" # Location of package manifests
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "@types/react"
+      - dependency-name: "@types/react-test-renderer"
+        versions:
+          - 17.0.0
+          - 17.0.1
+      - dependency-name: xlsx
+        versions: ["*"]
+      - dependency-name: "react-router-dom"
+        versions: ["*"]
+    allow:
+      - dependency-name: "react*"
+
+    commit-message:
+      prefix: "npm"
+
   - package-ecosystem: "docker" # See documentation for possible values
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
-    commit-message: 
+    commit-message:
       prefix: "[docker] "
-  
