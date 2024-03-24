@@ -1,0 +1,22 @@
+name: "run the tests"
+run-name: "@${{github.actor}} using github actions." 
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [master, main]
+  workflow_dispatch:
+
+jobs:
+  CheckoutCode:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./
+    steps:
+      - name: checkout the code
+        uses: actions/checkout@v4
+
+      - name: test the workflow
+        run: echo "Hello world. This is github actions"
+        shell: bash

@@ -1,0 +1,7 @@
+venv
+.gitignore
+*.md
+.flaskenv
+instance/
+.git
+

@@ -1,0 +1,122 @@
+import os
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+from termcolor import colored
+from typing import Optional, final, Union
+from app.errors import TillerException
+from .logger import logger
+from datetime import datetime
+from hashlib import md5
+from .utils import *
+
+db = SQLAlchemy()
+migrate = Migrate()
+
+# CONSTANTS
+TIMESTAMP_FORMAT = "%Y-%m-%d %H:%M:%S"
+
+
+class Helper(object):
+    def save_to_db(self):
+        db.session.add(self)
+        db.session.commit()
+    
+    def remove_from_db(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    def update(self):
+        try:
+            db.session.commit()
+            return True
+        except TillerException as e:
+            db.session.rollback()
+            logger.error(colored(f"Error updateing: {str(e)}", "red"))
+            return False
+
+
+@final
+class User(db.Model, Helper):
+    __tablename__ = "user"
+    id = db.Column(db.Integer(), primary_key=True, index=True, unique=True)
+    username = db.Column(db.String(30), nullable=False)
+    email = db.Column(db.String(50), nullable=False, unique=True)
+    _password = db.Column(db.String(100), nullable=False)
+    image = db.Column(db.String(50), default=lambda: User.generate_image_avatar())
+    verified = db.Column(db.Boolean(), default=False)
+    date_created = db.Column(
+        db.DateTime(), onupdate=datetime.now().replace(second=0, microsecond=0)
+    )
+    date_updated = db.Column(
+        db.DateTime(), default=datetime.now().replace(second=0, microsecond=0)
+    )
+
+    def __init__(self, *args: list, **kwargs: dict) -> None:
+        self.username = kwargs.get("username", "anonymous")
+        self.email = kwargs.get("email")
+        self.password = kwargs.get("password")
+        self.image = self.generate_image_avatar()
+        if kwargs.get("date_updated") is not None:
+            self.date_updated = datetime.now().strftime(TIMESTAMP_FORMAT)
+        else:
+            self.date_updated = self.get_datetime()
+        self.save_to_db()
+
+    @property
+    def password(self) -> bytes:
+        return self._password
+
+    @password.setter
+    def password(self, password) -> bytes:
+        if len(password) > 5 and type(password) == str:
+            self._password = hash_pwd(password)
+        else:
+            raise TillerException("Invalid password")
+
+    def get_datetime(self):
+        return datetime.now().replace(second=0, microsecond=0)
+
+    def generate_image_avatar(self, size: Optional[int] = 80) -> str:
+        """ Generates an image for the user using the gravatar """
+        digest = md5(self.email.lower().encode("utf-8")).hexdigest()
+        url = f"https://www.gravatar.com/avatar/{digest}?d=retro&s={size}"
+        return url
+
+    @classmethod
+    def get_user(cls, id):
+        """get the user according to id passed"""
+        user = cls.query.filter_by(id=int(id)).first()
+        if user:
+            return user
+        else:
+            return False
+
+    @classmethod
+    def get_user_by_email(cls, email) -> Union[object, bool]:
+        """get the user according email passed"""
+        user = cls.query.filter_by(email=email).first()
+        if user:
+            return user
+        else:
+            return False
+        
+    @classmethod
+    def login_user(cls, data: dict) -> bool:
+        user = cls.get_user_by_email(data.get("email"))
+        if user:
+            return verify_password(data.get("password"), user.password)
+        return False
+
+    def to_json(self):
+        return {
+            "username": self.username,
+            "email": self.email,
+            "image": self.image,
+            "date_created": self.date_created,
+        }
+    
+    def __eq__(self, __value: object) -> bool:
+        return self.id == __value.id and self.email == __value.email
+
+    def __str__(self):
+        return f"<Username: {self.username}>"
