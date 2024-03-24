@@ -1,10 +1,10 @@
-name: Tiller CI
-run-name: Running Tiller CI
+name: Tiller  Backend CI
+run-name: Running Tiller Backend CI
 on:
   push:
     branches: [main, master]
   pull_request:
-    branches: [master, main]
+    branches: [main, master]
   workflow_dispatch:
 
 jobs:
@@ -17,7 +17,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: .
+        working-directory: ./backend
 
     steps:
       - name: checkout the code
@@ -51,7 +51,7 @@ jobs:
     env:
       DOCKER_USERNAME: ${{secrets.DOCKER_USERNAME}}
       DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
-      IMAGE_NAME: tiller:latest
+      IMAGE_NAME: tiller-backend:latest
     steps:
       - name: checkout the code
         uses: actions/checkout@v4
