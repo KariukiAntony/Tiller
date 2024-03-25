@@ -79,6 +79,8 @@ def create_app(config: Optional[str] = "default") -> None:
     @app.before_request
     def create_db():
         with app.app_context():
+            db.drop_all()
+            print("dropped all the tables ")
             db.create_all()
             logger.info(
                 colored("Database tables created successfully", "green", attrs=["bold"])
