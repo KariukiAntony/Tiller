@@ -30,7 +30,9 @@ class DevelopmentConfig(BaseConfig):
 
 @dataclass
 class ProductionConfig(BaseConfig):
-    DATABASE_URI: str = os.environ.get("DATABASE_URL")
+    SQLALCHEMY_DATABASE_URI: str = os.environ.get("DATABASE_URL")
+    SQLALCHEMY_TRACK_MODIFICATION: bool = False
+    SQLALCHEMY_ECHO: bool = False
 
 
 @dataclass
