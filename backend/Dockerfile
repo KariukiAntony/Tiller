@@ -7,7 +7,7 @@ COPY requirements.txt /backend
 RUN pip install --upgrade pip setuptools wheel && \
     pip install --no-cache-dir -r requirements.txt
 
-ENV FLASK_APP=backend
+ENV FLASK_APP=manage.py
 ENV FLASK_DEBUG=0
 ENV FLASK_RUN_HOST=0.0.0.0
 ENV FLASK_RUN_PORT=5000
