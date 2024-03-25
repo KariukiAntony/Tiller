@@ -42,7 +42,9 @@ jobs:
         shell: bash
 
       - name: run the tests
-        run: flask tests
+        run: |
+          flask tests
+          flask migrate
         shell: bash
 
   build_and_pub:

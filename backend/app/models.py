@@ -39,10 +39,10 @@ class Helper(object):
 class User(db.Model, Helper):
     __tablename__ = "user"
     id = db.Column(db.Integer(), primary_key=True, index=True, unique=True)
-    username = db.Column(db.String(30), nullable=False)
-    email = db.Column(db.String(50), nullable=False, unique=True)
-    _password = db.Column(db.String(100), nullable=False)
-    image = db.Column(db.String(50), default=lambda: User.generate_image_avatar())
+    username = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(500), nullable=False, unique=True)
+    _password = db.Column(db.String(500), nullable=False)
+    image = db.Column(db.String(500), default=lambda: User.generate_image_avatar())
     verified = db.Column(db.Boolean(), default=False)
     date_created = db.Column(
         db.DateTime(), onupdate=datetime.now().replace(second=0, microsecond=0)
