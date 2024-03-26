@@ -12,7 +12,7 @@ from app.logger import logger
 from app.errors import TillerException
 
 load_dotenv(find_dotenv())
-redis_client = redis.Redis(host=os.getenv("REDIS_HOST", "localhost"), port=os.getenv("REDIS_PORT", 6379), db=0)
+redis_client = redis.Redis(host=os.getenv("REDIS_HOST"), port=os.getenv("REDIS_PORT", 6379), db=0)
 
 def validate_registration_data(data: dict) -> list:
     """Helper to validate user reg data
