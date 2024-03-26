@@ -1,6 +1,6 @@
 import json
 from flask import Blueprint, jsonify, redirect, request
-
+from flasgger import swag_from
 from app.http_codes import *
 from .helpers import *
 from .decorators import *
@@ -9,8 +9,8 @@ from .utils import *
 
 auth_bp = Blueprint("auth_bp", __name__, url_prefix="/api/v1/auth")
 
-
 @auth_bp.route("/signup", methods=["POST"])
+@swag_from("./docs/signup.yaml")
 @check_content_type
 def signup():
     data = request.get_json()

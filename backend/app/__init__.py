@@ -5,6 +5,8 @@ from termcolor import colored, cprint
 import click
 from flask_cors import CORS
 from werkzeug.exceptions import HTTPException
+from flasgger import Swagger, swag_from
+from .swagger import swagger_config, swagger_template
 from .errors import *
 from .config import config_dict
 from .models import *
@@ -17,6 +19,7 @@ def create_app(config: Optional[str] = "default") -> None:
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_dict[config])
     CORS(app, resources={r"/*": {"origins": "*"}})
+    Swagger(app=app, template=swagger_template, config=swagger_config)
 
     db.init_app(app=app)
     migrate.init_app(app, db)

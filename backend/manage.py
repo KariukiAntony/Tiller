@@ -31,6 +31,8 @@ def tests():
     if not results.wasSuccessful():
         print(colored("\n----Failed to run all the tests....", "red"))
         sys.exit(1)
+    else:
+        print(colored("All tests run successfully",  "blue"))
         
 @app.cli.command("migrate")
 def migrate():
