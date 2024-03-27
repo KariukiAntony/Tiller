@@ -70,6 +70,7 @@ def verify_account():
 
 
 @auth_bp.route("/login", methods=["POST"])
+@swag_from("./docs/login.yaml")
 def login():
     data = request.get_json()
     status, response = validate_login_data(data)
