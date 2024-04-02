@@ -1,0 +1,72 @@
+Account Login
+---
+tags:
+  - User Login
+consumes:
+  - application/json
+produces:
+  - application/json
+
+parameters:
+  - name: body
+    description: The body should contain the user login  details
+    in: body
+    required: true
+    schema:
+      type: object
+      required:
+       - "email"
+       - "password"
+      properties:
+        email:
+          type: "string"
+          format: "email"
+          example: "fred@gmail.com"
+        password:
+          type: "string"
+          format: password
+          example: "Xvq6thCutest"
+        
+
+responses:
+  200:
+    description: Login was successfull.
+    schema:
+      type: object
+    properties:
+      status:
+        type: "string"
+        example: "failed"
+      message:
+        type: "string"
+        example: "user with email already exists"
+      access_token:
+        type: "string"
+        example: "some random hashes"
+      refresh_token:
+        type: "string"
+        example: "some random hashes"
+
+  400:
+    description: User failes to provide either or all of the required credentials.
+    schema:
+      type: object
+    properties:
+      status:
+        type: "string"
+        example: "failed"
+      message:
+        type: "string"
+        example: "missing key 'password'"
+            
+  401:
+    description: Invalid credentials passed 
+    schema:
+      type: object
+    properties:
+      status:
+        type: "string"
+        example: "failed"
+      message:
+        type: "string"
+        example: "invalid email or password"
