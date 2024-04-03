@@ -55,3 +55,4 @@ updates:
     labels: ["docker-dependencies"]
     commit-message:
       prefix: "[docker] "
+      
