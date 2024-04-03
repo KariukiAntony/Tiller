@@ -34,7 +34,7 @@ def tests():
     click.echo(colored(text, "green"))
     loader = unittest.TestLoader()
     loader.testMethodPrefix = "test_"
-    tests = loader.discover("./app", initial="test*.py")
+    tests = loader.discover("./app", pattern="test*.py")
     results = unittest.TextTestRunner(verbosity=2).run(tests)
     if not results.wasSuccessful():
         print(colored("\n----Failed to run all the tests....", "red"))
