@@ -1,0 +1,55 @@
+Logout from your account
+---
+tags:
+  - Authentication and Authorization 
+consumes:
+  - application/json
+produces:
+  - application/json
+
+security:
+  - Bearer: []
+# parameters:
+#   - name: Authorization
+#     in: header
+#     description: Authorization header using the Bearer scheme
+#     required: true
+#     type: string
+
+
+responses:
+  200:
+    description: Logout was successfull.
+    schema:
+      type: object
+    properties:
+      status:
+        type: "string"
+        example: "success"
+      message:
+        type: "string"
+        example: "user with email already exists"
+
+  401:
+    description: Invalid credentials passed or invalid auth token
+    schema:
+      type: object
+    properties:
+      status:
+        type: "string"
+        example: "failed"
+      message:
+        type: "string"
+        example: "Invalid Authorization token"
+
+  500:
+    description: Error occures while logging out the user.
+    schema:
+      type: object
+    properties:
+      status:
+        type: "string"
+        example: "failed"
+      message:
+        type: "string"
+        example: "error when logging out the use"
