@@ -1,0 +1,48 @@
+Forgot password 
+---
+tags:
+  - Authentication and Authorization
+consumes:
+  - application/json
+produces:
+  - application/json
+
+parameters:
+  - name: body
+    description: The body should contain the following
+    in: body
+    required: true
+    schema:
+      type: object
+      required:
+        - "email"
+      properties:
+        token:
+          type: "string"
+          format: email
+          example: "fred@gmail.com"
+
+responses:
+  200:
+    description: Reset password link sent to your email.
+    schema:
+      type: object
+    properties:
+      status:
+        type: "string"
+        example: "success"
+      message:
+        type: "string"
+        example: "reset password link sent to your email"
+
+  400:
+    description: email not found
+    schema:
+      type: object
+    properties:
+      status:
+        type: "string"
+        example: "failed"
+      message:
+        type: "string"
+        example: "user with email: \"fred@gmail.com\" not found"

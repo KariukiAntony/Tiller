@@ -11,7 +11,7 @@ auth_bp = Blueprint("auth_bp", __name__, url_prefix="/api/v1/auth")
 
 
 @auth_bp.route("/signup", methods=["POST"])
-@swag_from("./docs/signup.yaml")
+@swag_from("./docs/auth/signup.yaml")
 @check_content_type
 def signup():
     data = request.get_json()
@@ -71,7 +71,7 @@ def verify_account():
 
 
 @auth_bp.route("/login", methods=["POST"])
-@swag_from("./docs/login.yaml")
+@swag_from("./docs/auth/login.yaml")
 def login():
     data = request.get_json()
     status, response = validate_login_data(data)
@@ -100,6 +100,7 @@ def login():
 
 
 @auth_bp.route("/forgot-password", methods=["POST"])
+@swag_from("./docs/auth/forgot-pass.yaml")
 def forgot_password():
     email = request.get_json().get("email")
     if email:
@@ -154,7 +155,7 @@ def check_reset_token():
 
 
 @auth_bp.route("/password-reset", methods=["POST"])
-@swag_from("./docs/password-reset.yaml")
+@swag_from("./docs/auth/password-reset.yaml")
 def password_reset():
     token = request.get_json().get("token")
     decoded_data = decode_token(token)
@@ -173,7 +174,7 @@ def password_reset():
 
 
 @auth_bp.route("/logout")
-@swag_from("./docs/logout.yaml")
+@swag_from("./docs/auth/logout.yaml")
 @login_required
 def logout(user):
     try:
