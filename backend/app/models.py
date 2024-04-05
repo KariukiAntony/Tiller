@@ -77,7 +77,7 @@ class User(db.Model, Helper):
         return datetime.now().replace(second=0, microsecond=0)
 
     def generate_image_avatar(self, size: Optional[int] = 80) -> str:
-        """ Generates an image for the user using the gravatar """
+        """ Generates an image for the user using the gravatar api """
         digest = md5(self.email.lower().encode("utf-8")).hexdigest()
         url = f"https://www.gravatar.com/avatar/{digest}?d=retro&s={size}"
         return url
@@ -107,7 +107,7 @@ class User(db.Model, Helper):
             return verify_password(data.get("password"), user.password)
         return False
 
-    def to_json(self):
+    def to_json(self) -> dict:
         return {
             "username": self.username,
             "email": self.email,
