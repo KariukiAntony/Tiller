@@ -1,0 +1,76 @@
+Edit user profile
+---
+tags:
+  - User
+consumes:
+  - application/json
+produces:
+  - application/json
+
+security:
+  - Bearer: []
+
+parameters:
+  - name: body
+    description: The body should any of the following
+    in: body
+    required: false
+    schema:
+      type: object
+      required:
+        - "username"
+        - "email"
+        - "password"
+
+      properties:
+        username:
+          type: "string"
+          example: "fred"
+        email:
+          type: "string"
+          format: "email"
+          example: "fred@gmail.com"
+        password:
+          type: "string"
+          format: password
+          example: "Xvq6thCutest"
+        image:
+          type: base64
+          example: "base64 encoded string"
+
+responses:
+  200:
+    description: Logout was successfull.
+    schema:
+      type: object
+    properties:
+      status:
+        type: "string"
+        example: "success"
+      message:
+        type: "string"
+        example: "user with email already exists"
+
+  401:
+    description: Invalid credentials passed or invalid auth token
+    schema:
+      type: object
+    properties:
+      status:
+        type: "string"
+        example: "failed"
+      message:
+        type: "string"
+        example: "Invalid Authorization token"
+
+  500:
+    description: Error occures while updating user profile.
+    schema:
+      type: object
+    properties:
+      status:
+        type: "string"
+        example: "failed"
+      message:
+        type: "string"
+        example: "error updating profile"

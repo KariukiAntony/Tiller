@@ -1,0 +1,51 @@
+Get user profile
+---
+tags:
+  - User 
+consumes:
+  - application/json
+produces:
+  - application/json
+
+security:
+  - Bearer: []
+# parameters:
+#   - name: Authorization
+#     in: header
+#     description: Authorization header using the Bearer scheme
+#     required: true
+#     type: string
+
+
+responses:
+  200:
+    description: Logout was successfull.
+    schema:
+      type: object
+    properties:
+      username:
+        type: "string"
+        example: "john doe"
+      email:
+        type: "string"
+        format: "email"
+        example: "johndoe@gmail.com"
+      image:
+        type: "string"
+        example: "https://gravatar.com-hajgjkhbaiqdjfh"
+      date_created:
+        type: "string"
+        example: "2023-4-20"
+
+  401:
+    description: Invalid token
+    schema:
+      type: object
+    properties:
+      status:
+        type: "string"
+        example: "failed"
+      message:
+        type: "string"
+        example: "Invalid Authorization token"
+
