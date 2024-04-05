@@ -1,7 +1,7 @@
-Account Login
+Login to your account
 ---
 tags:
-  - User Login
+  - Authentication and Authorization
 consumes:
   - application/json
 produces:
@@ -15,8 +15,8 @@ parameters:
     schema:
       type: object
       required:
-       - "email"
-       - "password"
+        - "email"
+        - "password"
       properties:
         email:
           type: "string"
@@ -26,7 +26,6 @@ parameters:
           type: "string"
           format: password
           example: "Xvq6thCutest"
-        
 
 responses:
   200:
@@ -58,9 +57,9 @@ responses:
       message:
         type: "string"
         example: "missing key 'password'"
-            
+
   401:
-    description: Invalid credentials passed 
+    description: Invalid credentials passed
     schema:
       type: object
     properties:

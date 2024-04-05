@@ -154,7 +154,8 @@ def password_reset():
         return make_response("error", "password too short", HTTP_400_BAD_REQUEST)
     
 
-@auth_bp.route("/logout", methods=["POST"])
+@auth_bp.route("/logout")
+@swag_from("./docs/logout.yaml")
 @login_required
 def logout(user):
     try:

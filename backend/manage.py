@@ -80,7 +80,7 @@ def tunnel():
         file_desc, temp_file_path = mkstemp()
         with os.fdopen(file_desc, "w") as new_file:
             with open(file_path, "r") as old_file:
-                # lines = [line.strip() for line in old_file if line.strip()]
+                lines = [line.strip() for line in old_file if line.strip()]
                 for line in old_file:
                     new_file.write(line.replace(initial, final))
 
@@ -133,5 +133,5 @@ def tunnel():
         ngrok.kill()
 
     except TillerException as error:
-        print(colored(f"an error has occured..: {str(error)}"))
-        sys.exit()
+        print(colored(f"[x] an error has occured..: {str(error)}", "red"))
+        sys.exit(1)
