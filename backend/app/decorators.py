@@ -1,10 +1,21 @@
 import functools
+import os
 from flask import jsonify, request
 from typing import Union, Callable
+from cachelib.redis import RedisCache
 from app.models import User
 from app.http_codes import *
 from app.helpers import decode_token, session, SESSION_KEY
 from app.errors import TillerException
+
+""" CONTANTS """
+HOST = os.environ.get("REDIS_HOST")
+PORT = os.environ.get("REDIS_PORT")
+DEFAULT_TIMEOUT = os.environ.get("CACHE_DEFAULT_TIMEOUT", 300)
+
+cache = RedisCache(
+    host=HOST, port=PORT, default_timeout=DEFAULT_TIMEOUT, key_prefix="tiller/%s"
+    )
 
 def check_content_type(function:Callable[..., str]) -> Callable[..., Union[str, tuple]]:
     @functools.wraps(function)
@@ -40,3 +51,22 @@ def login_required(function: Callable[..., str]) -> Callable[..., str]:
         except TillerException as e:
             return jsonify({"status": "failed", "message": str(e)}), HTTP_401_UNAUTHORIZED
     return check_if_logged_in
+
+
+def cache_response(timeout: int=300):
+    def decorator(function):
+        @functools.wraps(function)
+        def wrapper(*args: list, **kwargs: dict):
+            cached_key = request.url
+            cached_value = cache.get(cached_key)
+            if cached_value is not None:
+                return cached_value
+            else:
+                to_cache = function(*args, **kwargs)
+                cache.set(cached_key, to_cache, timeout=timeout)
+                return to_cache
+            
+        return wrapper
+    
+    return decorator
+            
