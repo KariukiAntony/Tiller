@@ -1,8 +1,8 @@
-from dotenv import load_dotenv
+from dotenv import find_dotenv, load_dotenv
 import os
 import unittest
 from app import create_app
-load_dotenv()
+load_dotenv(find_dotenv(".test"))
 
 class TestTiller(unittest.TestCase):
     config = os.environ.get("CONFIG") or "testing"

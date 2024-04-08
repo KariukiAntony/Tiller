@@ -9,8 +9,8 @@ from app.helpers import decode_token, session, SESSION_KEY
 from app.errors import TillerException
 
 """ CONTANTS """
-HOST = os.environ.get("REDIS_HOST")
-PORT = os.environ.get("REDIS_PORT")
+HOST = os.environ.get("REDIS_HOST", "localhost")
+PORT = os.environ.get("REDIS_PORT", 6379)
 DEFAULT_TIMEOUT = os.environ.get("CACHE_DEFAULT_TIMEOUT", 300)
 
 cache = RedisCache(
