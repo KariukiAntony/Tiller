@@ -8,7 +8,33 @@ on:
   workflow_dispatch:
 
 jobs:
+  env_vars:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./backend
+
+    steps:
+      - name: checkout the repository
+        uses: actions/checkout@v4
+
+      - name: create a env file
+        run: touch .env
+        shell: bash
+      - name: add the env variables
+        run: |
+          echo "REDIS_HOST=localhost" >> .env
+          echo "REDIS_PORT=6379" >> .env
+        shell: bash
+        
+      - name: notify the user
+        run: |
+          echo "@${{github.repository_owner}} env values added successfully"
+          cat .env
+        shell: bash
   run_tests:
+    needs: env_vars 
     runs-on: ubuntu-latest
 
     strategy:
