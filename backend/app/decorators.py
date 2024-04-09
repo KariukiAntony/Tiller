@@ -3,6 +3,7 @@ import os
 from flask import jsonify, request
 from typing import Union, Callable
 from cachelib.redis import RedisCache
+from cachelib.simple import SimpleCache
 from termcolor import colored
 from app.models import User
 from app.http_codes import *
@@ -14,14 +15,20 @@ HOST = os.environ.get("REDIS_HOST", "localhost")
 PORT = os.environ.get("REDIS_PORT")
 PASSWORD = os.environ.get("REDIS_PASSWORD", None)
 DEFAULT_TIMEOUT = os.environ.get("CACHE_DEFAULT_TIMEOUT", 300)
+config = os.environ.get("CONFIG") or "default"
 
-cache = RedisCache(
-    host=HOST,
-    password=PASSWORD,
-    port=PORT,
-    default_timeout=DEFAULT_TIMEOUT,
-    key_prefix="tiller/%s",
-)
+
+def connect_redis_locally() -> RedisCache:
+    return RedisCache(
+        host=HOST,
+        port=int(PORT),
+        default_timeout=DEFAULT_TIMEOUT,
+        key_prefix="tiller/%s",
+    )
+
+
+def cache_production() -> RedisCache:
+    return SimpleCache(default_timeout=int(DEFAULT_TIMEOUT))
 
 
 def check_content_type(
@@ -79,9 +86,9 @@ def cache_response(timeout: int = 300):
     def decorator(function):
         @functools.wraps(function)
         def wrapper(*args: list, **kwargs: dict):
+            cache = cache_production() if config == "production" else connect_redis_locally()
             cached_key = request.url
             cached_value = cache.get(cached_key)
-            print(colored(f"[++]key: {cached_key} cached: {cached_value}", "green"))
             if cached_value is not None:
                 return cached_value
             else:
