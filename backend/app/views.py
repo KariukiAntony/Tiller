@@ -10,7 +10,7 @@ user_bp = Blueprint("user_bp", __name__, url_prefix="/api/v1/user")
 @swag_from("./docs/user/getProfile.yaml", methods=["GET"])
 @swag_from("./docs/user/patchProfile.yaml", methods=["PATCH"])
 @login_required
-@cache_response(300)
+# @cache_response(300)
 def update_profile(user):
     if request.method == "PATCH":
         data = request.get_json()

@@ -12,7 +12,27 @@ from app.logger import logger
 from app.errors import TillerException
 
 load_dotenv(find_dotenv())
-redis_client = redis.Redis(host=os.getenv("REDIS_HOST"), port=os.getenv("REDIS_PORT", 6379), db=0)
+config = os.environ.get("CONFIG") or "default"
+
+
+def connect_to_redis_prod() -> redis.Redis:
+    return redis.Redis(
+        host=os.getenv("REDIS_HOST"),
+        port=int(os.getenv("REDIS_PORT")),
+        password=os.getenv("REDIS_PASSWORD"),
+        username=os.getenv("REDIS_USERNAME"),
+        ssl=True,
+        decode_responses=True,
+    )
+
+
+def connect_to_redis_dev() -> redis.Redis:
+    return redis.Redis(
+        host=os.getenv("REDIS_HOST"),
+        port=int(os.getenv("REDIS_PORT")),
+        decode_responses=True,
+    )
+
 
 def validate_registration_data(data: dict) -> list:
     """Helper to validate user reg data
@@ -59,7 +79,10 @@ def generate_verify_account_token(data: dict) -> Union[str, bool]:
 
 
 def generate_token(
-    data: dict, exp:OptionalArg[bool]=False, duration:OptionalArg[int]=None, refresh:OptionalArg[bool]=False
+    data: dict,
+    exp: OptionalArg[bool] = False,
+    duration: OptionalArg[int] = None,
+    refresh: OptionalArg[bool] = False,
 ) -> Union[str, bool]:
     global SESSION_KEY
     try:
@@ -77,6 +100,11 @@ def generate_token(
                 to_encode,
                 os.getenv("JWT_SECRET"),
                 algorithm=os.getenv("JWT_ALGORITHM", "HS256"),
+            )
+            redis_client = (
+                connect_to_redis_prod()
+                if config != "default"
+                else connect_to_redis_dev()
             )
             redis_client.set(data.get("email"), token, ex=timedelta(days=days))
 
