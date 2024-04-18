@@ -18,6 +18,7 @@ load_dotenv()
 def create_app(config: Optional[str] = "default") -> None:
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config_dict[config])
+    config_dict[config].init_app(app)
     CORS(app, resources={r"/*": {"origins": "*"}})
     Swagger(app=app, template=swagger_template, config=swagger_config)
 
@@ -74,6 +75,7 @@ def create_app(config: Optional[str] = "default") -> None:
     @app.shell_context_processor
     def make_shell_context():
         return {
+            "app": app,
             "db": db,
             "user": User,
         }
