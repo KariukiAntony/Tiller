@@ -1,6 +1,7 @@
 from dotenv import find_dotenv, load_dotenv
 import os
 import unittest
+from flask import current_app
 from app import create_app
 load_dotenv(find_dotenv(".test"))
 
@@ -19,6 +20,9 @@ class TestTiller(unittest.TestCase):
         self.app_context.pop()
         self.app = None
         self.app_context = None
+        
+    def test_app_exists(self):
+        self.assertFalse(current_app is None)
         
     def test_if_palindrome(self):
         name = "madam"

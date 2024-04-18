@@ -1,4 +1,5 @@
 import os
+from sqlalchemy import exc
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from termcolor import colored
@@ -29,9 +30,9 @@ class Helper(object):
         try:
             db.session.commit()
             return True
-        except TillerException as e:
+        except exc.IntegrityError as e:
             db.session.rollback()
-            logger.error(colored(f"Error updateing: {str(e)}", "red"))
+            logger.error(colored(f"Error updating: {str(e)}", "red"))
             return False
 
 
