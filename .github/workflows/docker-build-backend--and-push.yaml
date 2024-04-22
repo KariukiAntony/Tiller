@@ -67,9 +67,15 @@ jobs:
         run: echo ${{github.workspace}}
         shell: bash
 
+      - name: lint
+        shell: bash
+        run: |
+          flask8 .
+        
       - name: run the tests
         run: |
-          flask tests
+          flake8 .
+          black --check .
         shell: bash
 
   build_and_pub:
