@@ -4,4 +4,5 @@ venv
 .flaskenv
 instance/
 .git
-
+__pycache__
+.pytest_cache

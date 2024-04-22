@@ -8,7 +8,7 @@ from app.errors import TillerException
 from .logger import logger
 from datetime import datetime
 from hashlib import md5
-from .utils import *
+from .utils import hash_pwd, verify_password
 
 db = SQLAlchemy()
 migrate = Migrate()
