@@ -71,11 +71,11 @@ jobs:
         shell: bash
         run: |
           flask8 .
+          black --check .
         
       - name: run the tests
         run: |
-          flake8 .
-          black --check .
+          flask tests
         shell: bash
 
   build_and_pub:
