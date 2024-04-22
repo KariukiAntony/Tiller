@@ -1,12 +1,12 @@
-<h1 align="center">Tiller</h1>
-<h3 align="center">Empower yourself with a personal assistant designed to seamlessly capture speech, transcribe it into text format, and provide concise summaries. Additionally, it offers the convenience of converting these summaries into speech, enabling you to listen to your notes effortlessly.</h3>
+<h1 align="center">🔥️ Tiller 🔥️</h1>
+<h3 align="center"> 🚀️ Empower yourself with a personal assistant designed to seamlessly capture speech, transcribe it into text format, and provide concise summaries. Additionally, it offers the convenience of converting these summaries into speech, enabling you to listen to your notes effortlessly.</h3>
 
 ## Inspiration
 
 Whenever am in class, i easily get distracted which makes it difficult to take notes and to concentrate in class. Reflecting on this challenge, I identified several common distractions:
 
 - The constant pull of brainstorming new project ideas.
-- Maybe i have a bug that has taken me more than a day to fix with no success
+- Maybe i have a bug that has taken me more than a day to fix with no success.
 - Difficulty hearing the lecturer's voice clearly.
 
 This is where the idea of building tiller was born. This is a problem that i would solve using the knowledge that i had already acquired which would also make me put my skills into action.
@@ -14,23 +14,41 @@ This is where the idea of building tiller was born. This is a problem that i wou
 ## What it does.
 
 Tiller captures speech using google speech recognition api, transcribes it to a text format. Once the recording is over, the recoded text is sent to the openai api to be summarized while keeping the important info intact. Once the response is recieved from openai, it is converted into speech using the tiktok text to speech and the audio is uploaded to cloudinary for starage.
+The user is able to keep both the summarized  and the voice format of the text. This makes it possible to listen to your notes effortlessly.
 
 ## Use Cases
+#### Education
+ - With tiller, you only put effort on listening and understanding what the lecturer is teaching.
+ - Tiller makes it possible to listen to your notes just like you would to music.
+#### Solution for the deaf.
+ - Tiller is a solution out of the box for people with hearing disability.
+ With only a single click, the deaf can get all the information said in a meeting. 
+
+ #### meetings and conferences.
+ - In most meetings, most of the attendees never take notes, and it becomes difficult to refer to the information said in the future. With Tiller, you don't need to worry because everything is handled for you. 
+
 
 ## Accomplishments that am proud of
+- Being able to develop an effective application that could literally solve my problem.
+- Successfully integrating the frontend and the backend despite the many challenges i ran into.
+- Learning some cool stuff through the implementation journey.
 
 ## What i learned
-
+- I discovered that i could use the skills that i acquire to solve my own problems. 
+ - I learnt more on how client-server integration works. Actually, this was my first experience integrating an api with a frontend.
+- Containerizing the frontend, backend and database.
+- Converting text to speech using the tiktok text to speech api
+- Using github actions for rapid development and deployments.
 ## Built With
 
 - **python and flask for the backend**
-- **javascript and react for the frontend**
+- **javascript, tailwind and react for the frontend**
 - **postgresql database**
 - **Tiktok text to speech api**
 - **Cloudinary**
 - **Google Speech recognition api**
 - **Docker Compose for development**
-- **Github Actions CI**
+- **Github Actions as the CI/CD pipeline**
 
 <div align="center">
   <h1>How To Use Tiller </h1>

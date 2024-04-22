@@ -1,7 +1,8 @@
 from flask import Blueprint, jsonify, request
 from flasgger import swag_from
 from .helpers import *
-from .decorators import *
+from .decorators import login_required
+from .http_codes import *
 
 user_bp = Blueprint("user_bp", __name__, url_prefix="/api/v1/user")
 
