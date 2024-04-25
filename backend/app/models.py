@@ -56,7 +56,12 @@ class User(db.Model, Helper):
     date_updated = db.Column(
         db.DateTime(), default=datetime.now().replace(second=0, microsecond=0)
     )
-    notes = db.relationship("Note", backref=db.backref("user", lazy="joined"), passive_deletes=True, lazy="dynamic")
+    notes = db.relationship(
+        "Note",
+        backref=db.backref("user", lazy="joined"),
+        passive_deletes=True,
+        lazy="dynamic",
+    )
 
     def __init__(self, *args: list, **kwargs: dict) -> None:
         self.username = kwargs.get("username", "anonymous")
@@ -136,7 +141,9 @@ class Note(db.Model, Helper):
     transcript = db.Column(db.Text(), nullable=False)
     summary = db.Column(db.Text(), nullable=False)
     audio_url = db.Column(db.String(5000), unique=True, nullable=False)
-    user_id = db.Column(db.Integer(), db.ForeignKey("user.id",  ondelete="CASCADE"), nullable=False)
+    user_id = db.Column(
+        db.Integer(), db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False
+    )
     date_created = db.Column(
         db.DateTime(), default=datetime.now().replace(second=0, microsecond=0)
     )
@@ -148,23 +155,24 @@ class Note(db.Model, Helper):
         self.user_id = kwargs.get("user_id")
         # add data to db
         self.save_to_db()
-        
+
     @classmethod()
-    def paginate(cls, page: Optional[int]=PAGE, per_page: Optional[int]=PER_PAGE):
-        return cls.query.order_by(Note.id.desc()).paginate(page=page, per_page=per_page, error_out=False)
-    
+    def paginate(cls, page: Optional[int] = PAGE, per_page: Optional[int] = PER_PAGE):
+        return cls.query.order_by(Note.id.desc()).paginate(
+            page=page, per_page=per_page, error_out=False
+        )
+
     @classmethod
-    def get_by_id(cls, id:int):
+    def get_by_id(cls, id: int):
         return cls.query.filter_by(id=id).first_or_404()
-    
-        
+
     def to_json(self):
         return {
             "transcript": self.transcript,
             "summary": self.summary,
             "audio_url": self.audio_url,
-            "date_created": self.date_created
+            "date_created": self.date_created,
         }
-        
+
     def __str__(self) -> str:
         return "<note id: {0}>".format(self.id)
