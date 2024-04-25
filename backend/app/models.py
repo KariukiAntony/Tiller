@@ -56,6 +56,7 @@ class User(db.Model, Helper):
     date_updated = db.Column(
         db.DateTime(), default=datetime.now().replace(second=0, microsecond=0)
     )
+    notes = db.relationship("Note", backref=db.backref("user", lazy="joined"), passive_deletes=True, lazy="dynamic")
 
     def __init__(self, *args: list, **kwargs: dict) -> None:
         self.username = kwargs.get("username", "anonymous")
@@ -164,5 +165,6 @@ class Note(db.Model, Helper):
             "audio_url": self.audio_url,
             "date_created": self.date_created
         }
+        
     def __str__(self) -> str:
         return "<note id: {0}>".format(self.id)
