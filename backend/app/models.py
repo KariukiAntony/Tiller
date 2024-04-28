@@ -156,7 +156,7 @@ class Note(db.Model, Helper):
         # add data to db
         self.save_to_db()
 
-    @classmethod()
+    @classmethod
     def paginate(cls, page: Optional[int] = PAGE, per_page: Optional[int] = PER_PAGE):
         return cls.query.order_by(Note.id.desc()).paginate(
             page=page, per_page=per_page, error_out=False
