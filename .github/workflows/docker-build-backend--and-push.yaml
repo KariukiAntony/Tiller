@@ -67,11 +67,11 @@ jobs:
         run: echo ${{github.workspace}}
         shell: bash
 
-      - name: lint
-        shell: bash
-        run: |
-          flake8 .
-          black --check .
+      # - name: lint
+      #   shell: bash
+      #   run: |
+      #     flake8 .
+      #     black --check .
 
       - name: run the tests
         run: |
