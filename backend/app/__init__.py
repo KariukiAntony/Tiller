@@ -5,13 +5,15 @@ from termcolor import colored, cprint
 import click
 from flask_cors import CORS
 from werkzeug.exceptions import HTTPException
-from flasgger import Swagger, swag_from
+from flasgger import Swagger
 from .swagger import swagger_config, swagger_template
 from .errors import *
 from .config import config_dict
-from .models import *
+from .models import db, migrate, User
 from .auth import auth_bp
 from .views import user_bp
+from .utils import mail
+from .logger import logger
 from dotenv import load_dotenv
 
 load_dotenv()

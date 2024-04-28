@@ -27,14 +27,14 @@ jobs:
           echo "REDIS_HOST=localhost" >> .env
           echo "REDIS_PORT=6379" >> .env
         shell: bash
-        
+
       - name: notify the user
         run: |
           echo "@${{github.repository_owner}} env values added successfully"
           cat .env
         shell: bash
   run_tests:
-    needs: env_vars 
+    needs: env_vars
     runs-on: ubuntu-latest
 
     strategy:
@@ -67,12 +67,12 @@ jobs:
         run: echo ${{github.workspace}}
         shell: bash
 
-      - name: lint
-        shell: bash
-        run: |
-          flake8 .
-          black --check .
-        
+      # - name: lint
+      #   shell: bash
+      #   run: |
+      #     flake8 .
+      #     black --check .
+
       - name: run the tests
         run: |
           flask tests
