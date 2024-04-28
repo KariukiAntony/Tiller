@@ -1,7 +1,6 @@
 import logging
 import os
 from dotenv import load_dotenv, find_dotenv
-from termcolor import colored
 
 load_dotenv(find_dotenv())
 
