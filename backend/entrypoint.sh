@@ -11,5 +11,5 @@ if [ "$DATABASE" == "postgres" ]; then
     echo "postgresql started"
 
 fi
-
+echo "running your flask application..."
 exec "$@"
